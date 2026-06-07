@@ -7,13 +7,46 @@ services:
     ports:
       - "8642:8642"
     volumes:
+      # Monta tu configuración existente de Hermes
       - ~/.hermes:/opt/data
+    env_file:
+      # Carga variables de entorno del archivo .env local
+      - .env
     environment:
+      # Variables de entorno del sistema pasadas al contenedor
+      # LLM Providers
+      - KIMI_API_KEY=${KIMI_API_KEY:-}
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY:-}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY:-}
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - NOVITA_API_KEY=${NOVITA_API_KEY:-}
+      - OLLAMA_API_KEY=${OLLAMA_API_KEY:-}
+      - GLM_API_KEY=${GLM_API_KEY:-}
+
+      # Telegram
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN:-}
+      - TELEGRAM_ALLOWED_USERS=${TELEGRAM_ALLOWED_USERS:-}
+      - TELEGRAM_HOME_CHANNEL=${TELEGRAM_HOME_CHANNEL:-}
+      - TELEGRAM_WEBHOOK_URL=${TELEGRAM_WEBHOOK_URL:-}
+      - TELEGRAM_WEBHOOK_PORT=${TELEGRAM_WEBHOOK_PORT:-8443}
+      - TELEGRAM_WEBHOOK_SECRET=${TELEGRAM_WEBHOOK_SECRET:-}
+
+      # Terminal
+      - TERMINAL_MODAL_IMAGE=${TERMINAL_MODAL_IMAGE:-nikolaik/python-nodejs:python3.11-nodejs20}
+      - TERMINAL_TIMEOUT=${TERMINAL_TIMEOUT:-180}
+      - TERMINAL_LIFETIME_SECONDS=${TERMINAL_LIFETIME_SECONDS:-300}
+
+      # Browser
+      - BROWSERBASE_API_KEY=${BROWSERBASE_API_KEY:-}
+      - BROWSERBASE_PROXIES=${BROWSERBASE_PROXIES:-true}
+      - BROWSERBASE_ADVANCED_STEALTH=${BROWSERBASE_ADVANCED_STEALTH:-false}
+      - BROWSER_SESSION_TIMEOUT=${BROWSER_SESSION_TIMEOUT:-300}
+      - BROWSER_INACTIVITY_TIMEOUT=${BROWSER_INACTIVITY_TIMEOUT:-120}
+
       # Opcional: descomenta si necesitas saltar migraciones de config
       # - HERMES_SKIP_CONFIG_MIGRATION=1
-      # Opcional: forwarding de variables de entorno adicionales
-      # - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
-      # - OPENAI_API_KEY=${OPENAI_API_KEY:-}
     networks:
       - hermes-net
     # Descomenta si necesitas acceso a GPUs locales
