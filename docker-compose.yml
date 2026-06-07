@@ -7,13 +7,10 @@ services:
     ports:
       - "8642:8642"
     volumes:
-      # Monta tu configuración existente de Hermes
-      - ~/.hermes:/opt/data
-    env_file:
-      # Carga variables de entorno del archivo .env local
-      - .env
+      # Volumen persistente para datos de Hermes (config, memoria, skills, sesiones)
+      - hermes-data:/opt/data
     environment:
-      # Variables de entorno del sistema pasadas al contenedor
+      # Variables de entorno inyectadas por Dokploy
       # LLM Providers
       - KIMI_API_KEY=${KIMI_API_KEY:-}
       - OPENROUTER_API_KEY=${OPENROUTER_API_KEY:-}
@@ -49,6 +46,10 @@ services:
       # - HERMES_SKIP_CONFIG_MIGRATION=1
     networks:
       - hermes-net
+    # Labels para Traefik en Dokploy (se configuran automáticamente)
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.hermes.loadbalancer.server.port=8642"
     # Descomenta si necesitas acceso a GPUs locales
     # deploy:
     #   resources:
@@ -57,6 +58,10 @@ services:
     #         - driver: nvidia
     #           count: all
     #           capabilities: [gpu]
+
+volumes:
+  hermes-data:
+    driver: local
 
 networks:
   hermes-net:
