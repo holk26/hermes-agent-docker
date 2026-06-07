@@ -1,13 +1,15 @@
 services:
   hermes:
-    image: nousresearch/hermes-agent:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: hermes-agent
     restart: unless-stopped
     command: gateway run
     ports:
       - "8642:8642"
     volumes:
-      # Volumen persistente para datos de Hermes (config, memoria, skills, sesiones)
+      # Volumen persistente para datos dinámicos (sesiones, estado, etc.)
       - hermes-data:/opt/data
     environment:
       # Variables de entorno inyectadas por Dokploy

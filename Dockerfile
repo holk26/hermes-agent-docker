@@ -1,20 +1,22 @@
-# Dockerfile extendido para Hermes Agent
+# Dockerfile extendido para Hermes Agent en Dokploy
 # Basado en la imagen oficial de NousResearch
-# Usa esto si necesitas instalar dependencias adicionales o personalizar el contenedor
+# Incluye configuración personalizada del usuario
 
 FROM nousresearch/hermes-agent:latest
 
-# Instala dependencias adicionales si las necesitas
-# USER root
-# RUN apt-get update && apt-get install -y --no-install-recommends \
-#     tu-paquete \
-#     && rm -rf /var/lib/apt/lists/*
+# Crear directorio de datos y copiar configuración esencial
+# La imagen base maneja permisos automáticamente al iniciar
+RUN mkdir -p /opt/data
 
-# Copia archivos personalizados si los tienes
-# COPY custom-scripts/ /opt/custom-scripts/
+# Copiar archivos de configuración (sin secretos)
+# Los skills se descargan automáticamente al iniciar el contenedor
+COPY config.yaml /opt/data/config.yaml
+COPY SOUL.md /opt/data/SOUL.md
+COPY memories/ /opt/data/memories/
 
-# Vuelve al usuario por defecto de la imagen base
-# USER hermes
+# Asegurar permisos permisivos para que la imagen base pueda re-mapearlos
+RUN chmod -R 777 /opt/data
 
-# El punto de entrada y comando por defecto vienen de la imagen base
-# Puedes sobreescribirlos en docker-compose.yml o al ejecutar docker run
+# IMPORTANTE: No usar USER — la imagen base de Hermes debe ejecutarse como root
+# y usa HERMES_UID/HERMES_GID para mapear al usuario host.
+# El punto de entrada y comando por defecto vienen de la imagen base.

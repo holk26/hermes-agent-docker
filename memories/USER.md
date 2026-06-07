@@ -1,0 +1,5 @@
+User prefers direct, concise responses. When asked to perform an action ("abre en local", "arregla esto", "ve a", "dale check"), they want immediate execution with minimal preamble — no explanatory fluff before acting. They appreciate Spanish language responses when they ask in Spanish. They prefer being shown options after a failure rather than long explanations.
+§
+User prefers Spanish language responses when they ask in Spanish. They want direct, concise responses with immediate execution — minimal preamble, no fluff. When asked to perform an action ("ayudame a configurar", "arregla esto"), execute immediately.
+§
+User's PC specs: Intel i7-14650HX (16c/24t), 16GB RAM, NVIDIA RTX 5060 Laptop 8GB, CachyOS Linux. Runs a performance-tuned distro, likely tech-savvy and interested in gaming/ML/development.
