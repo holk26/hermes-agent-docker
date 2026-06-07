@@ -1,0 +1,30 @@
+services:
+  hermes:
+    image: nousresearch/hermes-agent:latest
+    container_name: hermes-agent
+    restart: unless-stopped
+    command: gateway run
+    ports:
+      - "8642:8642"
+    volumes:
+      - ~/.hermes:/opt/data
+    environment:
+      # Opcional: descomenta si necesitas saltar migraciones de config
+      # - HERMES_SKIP_CONFIG_MIGRATION=1
+      # Opcional: forwarding de variables de entorno adicionales
+      # - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      # - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+    networks:
+      - hermes-net
+    # Descomenta si necesitas acceso a GPUs locales
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
+
+networks:
+  hermes-net:
+    driver: bridge
